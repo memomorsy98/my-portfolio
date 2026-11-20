@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mazen Mahmoud — Junior SOC Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E13;
+    --bg-alt:#0D1319;
+    --panel:#10161D;
+    --border:#1F2A35;
+    --border-soft:#161E27;
+    --text:#DCE4EA;
+    --text-muted:#7C8A97;
+    --text-dim:#4E5A65;
+    --info:#4A90D9;
+    --sev-critical:#E5484D;
+    --sev-high:#F0883E;
+    --sev-medium:#E3B341;
+    --sev-low:#3FB950;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'IBM Plex Sans', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--info); color:#0A0E13;}
+
+  /* ---------- layout shell ---------- */
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,19,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .topbar-inner{
+    max-width:760px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:var(--mono); font-size:12.5px;
+  }
+  .brand{display:flex; align-items:center; gap:8px; color:var(--text);}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--sev-low); box-shadow:0 0 6px var(--sev-low);}
+  .brand b{font-weight:600; letter-spacing:0.02em;}
+  .navlinks{display:flex; gap:18px; color:var(--text-muted);}
+  .navlinks a{text-decoration:none; transition:color .15s ease;}
+  .navlinks a:hover{color:var(--info);}
+  @media (max-width:560px){ .navlinks{display:none;} }
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:56px 0; border-bottom:1px solid var(--border-soft);}
+  section:last-of-type{border-bottom:none;}
+  .tag{
+    font-family:var(--mono); font-size:12px; color:var(--text-dim);
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+  }
+  .tag::before{content:'//'; color:var(--info);}
+  h2{
+    font-family:var(--mono); font-weight:600; font-size:22px;
+    color:var(--text); margin-bottom:20px; letter-spacing:-0.01em;
+  }
+  p{color:var(--text-muted); max-width:64ch;}
+  .lede{color:var(--text); font-size:17px;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 56px 0;}
+  .hero-log{
+    font-family:var(--mono); font-size:12.5px; color:var(--text-dim);
+    margin-bottom:28px;
+  }
+  .hero-log div{opacity:0; animation:fadeUp .5s ease forwards;}
+  .hero-log div:nth-child(1){animation-delay:.05s;}
+  .hero-log div:nth-child(2){animation-delay:.2s;}
+  .hero-log div:nth-child(3){animation-delay:.35s;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+  .hero h1{
+    font-family:var(--mono); font-weight:700; font-size:38px;
+    line-height:1.25; color:var(--text); letter-spacing:-0.01em;
+    opacity:0; animation:fadeUp .6s ease forwards; animation-delay:.5s;
+  }
+  .hero h1 span{color:var(--info);}
+  .hero .role{
+    margin-top:10px; font-size:17px; color:var(--text-muted);
+    opacity:0; animation:fadeUp .6s ease forwards; animation-delay:.65s;
+  }
+  .status-row{
+    margin-top:24px; display:flex; flex-wrap:wrap; gap:10px;
+    opacity:0; animation:fadeUp .6s ease forwards; animation-delay:.8s;
+  }
+  .badge{
+    font-family:var(--mono); font-size:11.5px; padding:5px 10px;
+    border:1px solid var(--border); border-radius:3px; color:var(--text-muted);
+    display:flex; align-items:center; gap:6px;
+  }
+  .badge .sw{width:6px; height:6px; border-radius:50%;}
+  .cta-row{margin-top:32px; display:flex; gap:12px; flex-wrap:wrap;
+    opacity:0; animation:fadeUp .6s ease forwards; animation-delay:.95s;}
+  .btn{
+    font-family:var(--mono); font-size:13px; padding:11px 18px;
+    border-radius:3px; text-decoration:none; transition:all .15s ease;
+    border:1px solid transparent;
+  }
+  .btn-primary{background:var(--info); color:#08111A; font-weight:600;}
+  .btn-primary:hover{background:#5A9EE3;}
+  .btn-outline{border-color:var(--border); color:var(--text);}
+  .btn-outline:hover{border-color:var(--info); color:var(--info);}
+
+  /* ---------- about ---------- */
+  .about-body{color:var(--text); font-size:15.5px; max-width:66ch;}
+
+  /* ---------- timeline (experience) ---------- */
+  .timeline{position:relative; padding-left:28px;}
+  .timeline::before{
+    content:''; position:absolute; left:5px; top:6px; bottom:6px;
+    width:1px; background:var(--border);
+  }
+  .t-item{position:relative; margin-bottom:30px;}
+  .t-item:last-child{margin-bottom:0;}
+  .t-item::before{
+    content:''; position:absolute; left:-28px; top:5px;
+    width:11px; height:11px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--sev-low);
+  }
+  .t-meta{font-family:var(--mono); font-size:12px; color:var(--text-dim); margin-bottom:4px;}
+  .t-title{font-family:var(--mono); font-weight:600; font-size:15.5px; color:var(--text); margin-bottom:2px;}
+  .t-org{font-size:14px; color:var(--text-muted); margin-bottom:10px;}
+  .t-item ul{padding-left:18px; color:var(--text-muted); font-size:14.5px;}
+  .t-item li{margin-bottom:5px;}
+  .pill-result{
+    display:inline-block; margin-top:10px; font-family:var(--mono); font-size:11px;
+    color:var(--sev-low); border:1px solid rgba(63,185,80,0.35); background:rgba(63,185,80,0.08);
+    padding:3px 8px; border-radius:3px;
+  }
+
+  /* ---------- skills / detection coverage ---------- */
+  .cov-grid{display:grid; grid-template-columns:1fr; gap:18px;}
+  .cov-row{
+    display:grid; grid-template-columns:160px 1fr; gap:16px;
+    padding:14px 0; border-top:1px solid var(--border-soft);
+  }
+  .cov-row:first-child{border-top:none;}
+  .cov-label{font-family:var(--mono); font-size:12.5px; color:var(--text-dim); padding-top:2px;}
+  .cov-values{color:var(--text); font-size:14.5px;}
+  @media (max-width:560px){
+    .cov-row{grid-template-columns:1fr; gap:4px;}
+  }
+
+  /* ---------- case files (projects) ---------- */
+  .case{
+    border:1px solid var(--border); border-radius:4px; padding:20px;
+    margin-bottom:16px; background:var(--panel);
+  }
+  .case:last-child{margin-bottom:0;}
+  .case-head{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+  .case-id{font-family:var(--mono); font-size:11.5px; color:var(--text-dim);}
+  .case-status{
+    font-family:var(--mono); font-size:10.5px; padding:3px 8px; border-radius:3px;
+    text-transform:uppercase; letter-spacing:0.03em;
+  }
+  .status-resolved{color:var(--sev-low); border:1px solid rgba(63,185,80,.35); background:rgba(63,185,80,.08);}
+  .status-active{color:var(--sev-medium); border:1px solid rgba(227,179,65,.35); background:rgba(227,179,65,.08);}
+  .status-ongoing{color:var(--info); border:1px solid rgba(74,144,217,.35); background:rgba(74,144,217,.08);}
+  .case-title{font-family:var(--mono); font-weight:600; font-size:15.5px; color:var(--text); margin-bottom:8px;}
+  .case p{font-size:14.5px; margin-bottom:10px;}
+  .case-tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .case-tag{font-family:var(--mono); font-size:10.5px; color:var(--text-muted); border:1px solid var(--border); padding:3px 7px; border-radius:3px;}
+  .case-link{font-family:var(--mono); font-size:12.5px; color:var(--info); text-decoration:none;}
+  .case-link:hover{text-decoration:underline;}
+
+  /* ---------- certs / education ---------- */
+  .cert{padding:16px 0; border-top:1px solid var(--border-soft);}
+  .cert:first-child{border-top:none;}
+  .cert-top{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:4px;}
+  .cert-name{font-family:var(--mono); font-weight:600; font-size:14.5px; color:var(--text);}
+  .cert-date{font-family:var(--mono); font-size:12px; color:var(--text-dim);}
+  .cert p{font-size:14px; margin-top:4px;}
+
+  /* ---------- contact ---------- */
+  .contact-panel{
+    border:1px solid var(--border); border-radius:4px; padding:28px;
+    background:var(--panel);
+  }
+  .contact-panel .lede{margin-bottom:20px;}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px 24px;}
+  @media (max-width:560px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-item{font-family:var(--mono); font-size:13.5px;}
+  .contact-item .k{color:var(--text-dim); display:block; font-size:11px; margin-bottom:3px;}
+  .contact-item a{color:var(--info); text-decoration:none;}
+  .contact-item a:hover{text-decoration:underline;}
+
+  footer{padding:32px 0 48px 0; font-family:var(--mono); font-size:11.5px; color:var(--text-dim); text-align:center;}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="dot"></span><b>mazen@soc</b><span style="color:var(--text-dim)">:~$</span></div>
+      <div class="navlinks">
+        <a href="#about">about</a>
+        <a href="#experience">experience</a>
+        <a href="#coverage">skills</a>
+        <a href="#cases">case files</a>
+        <a href="#education">education</a>
+        <a href="#contact">contact</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-log">
+        <div>[2026-09-03 09:41:02] session initiated — user: mazen.mahmoud</div>
+        <div>[2026-09-03 09:41:02] role: junior_soc_analyst · clearance: blue_team</div>
+        <div>[2026-09-03 09:41:03] status: monitoring for opportunities...</div>
+      </div>
+      <h1>Mazen Mahmoud<br><span>Junior SOC Analyst</span></h1>
+      <p class="role">Blue team &amp; cybersecurity student at Cairo University, trained on live SIEM workflows through LetsDefend — alert triage, phishing analysis, web attack detection, and MITRE ATT&amp;CK mapping.</p>
+      <div class="status-row">
+        <span class="badge"><span class="sw" style="background:var(--sev-low)"></span>SIEM &amp; log analysis</span>
+        <span class="badge"><span class="sw" style="background:var(--sev-medium)"></span>Phishing &amp; malware triage</span>
+        <span class="badge"><span class="sw" style="background:var(--sev-high)"></span>Web attack detection</span>
+        <span class="badge"><span class="sw" style="background:var(--info)"></span>CCNA networking</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:mazenmahmoud1552005@gmail.com">Get in touch</a>
+        <a class="btn btn-outline" href="#cases">View case files</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="tag">about</div>
+      <h2>Summary</h2>
+      <p class="about-body">Cybersecurity student at Cairo University (CS &amp; AI, Cybersecurity Track) with hands-on SOC training through the LetsDefend SOC Analyst Learning Path — covering SIEM monitoring, alert triage, phishing analysis, web attack detection, and the MITRE ATT&amp;CK framework. Backed by a strong networking foundation (CCNA) and complementary offensive-security knowledge that sharpens detection instincts. Currently seeking a Junior SOC Analyst (L1) role contributing to 24x7 monitoring and threat detection.</p>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="tag">experience</div>
+      <h2>Work history</h2>
+      <div class="timeline">
+        <div class="t-item">
+          <div class="t-meta">AUG 2025</div>
+          <div class="t-title">IT &amp; Cybersecurity Trainee</div>
+          <div class="t-org">Suez Oil Company (SUCO) — Cairo, Egypt</div>
+          <ul>
+            <li>Completed a structured training program in the Networks &amp; Cybersecurity track at a major Egyptian oil &amp; gas company, covering enterprise networking, IT operations, and the role of cybersecurity in critical infrastructure.</li>
+          </ul>
+          <span class="pill-result">Excellent rating — behavioral &amp; overall performance</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS / COVERAGE -->
+    <section id="coverage">
+      <div class="tag">detection coverage</div>
+      <h2>Skills</h2>
+      <div class="cov-grid">
+        <div class="cov-row">
+          <div class="cov-label">SOC &amp; blue team</div>
+          <div class="cov-values">SIEM monitoring, log analysis, alert triage, false-positive analysis, escalation, security event correlation, threat intelligence, EDR, IDS/IPS, firewalls, email security, log management</div>
+        </div>
+        <div class="cov-row">
+          <div class="cov-label">Frameworks</div>
+          <div class="cov-values">MITRE ATT&amp;CK, Cyber Kill Chain, OWASP Top 10</div>
+        </div>
+        <div class="cov-row">
+          <div class="cov-label">Malware &amp; phishing</div>
+          <div class="cov-values">Email header &amp; attachment analysis, VirusTotal, Hybrid Analysis, Process Hacker, Procmon, basic static &amp; dynamic malware analysis</div>
+        </div>
+        <div class="cov-row">
+          <div class="cov-label">Networking</div>
+          <div class="cov-values">TCP/IP, OSI model, DNS, HTTP/HTTPS, SMB, VLAN, VPN, subnetting, routing &amp; switching, Wireshark packet analysis</div>
+        </div>
+        <div class="cov-row">
+          <div class="cov-label">Offensive (comp.)</div>
+          <div class="cov-values">Web application penetration testing, OWASP Top 10 exploitation, Burp Suite, bug bounty fundamentals</div>
+        </div>
+        <div class="cov-row">
+          <div class="cov-label">Programming</div>
+          <div class="cov-values">Python, Java, C++, Bash, Linux basics</div>
+        </div>
+        <div class="cov-row">
+          <div class="cov-label">Cryptography</div>
+          <div class="cov-values">AES, DES, RSA implementation in Java</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE FILES / PROJECTS -->
+    <section id="cases">
+      <div class="tag">case files</div>
+      <h2>Hands-on practice</h2>
+
+      <div class="case">
+        <div class="case-head">
+          <span class="case-id">CASE-001</span>
+          <span class="case-status status-resolved">Resolved</span>
+        </div>
+        <div class="case-title">DFIR writeup — "Disclose The Agent"</div>
+        <p>SMTP/Wireshark forensics challenge: reconstructed a TCP stream, decoded Base64 credentials, exported an IMF object, and verified integrity with MD5 hashing. Documented as a Markdown DFIR writeup.</p>
+        <div class="case-tags">
+          <span class="case-tag">Wireshark</span>
+          <span class="case-tag">SMTP</span>
+          <span class="case-tag">Base64</span>
+          <span class="case-tag">MD5</span>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-head">
+          <span class="case-id">CASE-002</span>
+          <span class="case-status status-ongoing">Ongoing</span>
+        </div>
+        <div class="case-title">Splunk log-monitoring setup</div>
+        <p>Deployed Splunk on an Ubuntu server and connected it to Windows event logs via a Universal Forwarder, for hands-on practice with ingestion and log search.</p>
+        <div class="case-tags">
+          <span class="case-tag">Splunk</span>
+          <span class="case-tag">Ubuntu</span>
+          <span class="case-tag">Windows Event Logs</span>
+          <span class="case-tag">Universal Forwarder</span>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-head">
+          <span class="case-id">CASE-003</span>
+          <span class="case-status status-ongoing">Ongoing</span>
+        </div>
+        <div class="case-title">SOC Analyst Learning Path — LetsDefend</div>
+        <p>Hands-on blue-team training on a virtual SIEM: true vs. false positive triage, phishing email analysis (headers, URLs, attachments via VirusTotal/Hybrid Analysis), web attack investigation (SQLi, XSS, command injection) mapped to MITRE ATT&amp;CK, and malware triage on live VMs. Also working through the TryHackMe SOC Level 1 path.</p>
+        <div class="case-tags">
+          <span class="case-tag">LetsDefend</span>
+          <span class="case-tag">TryHackMe</span>
+          <span class="case-tag">SIEM</span>
+          <span class="case-tag">MITRE ATT&amp;CK</span>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-head">
+          <span class="case-id">CASE-004</span>
+          <span class="case-status status-active">Active</span>
+        </div>
+        <div class="case-title">Bug bounty practice — HackerOne</div>
+        <p>Applies an attacker's mindset to sharpen detection instincts: hands-on bug hunting on HackerOne alongside 160 hours of web application penetration testing training (network, web, Linux, and Windows fundamentals, plus real bug-bounty practice).</p>
+        <div class="case-tags">
+          <span class="case-tag">HackerOne</span>
+          <span class="case-tag">Burp Suite</span>
+          <span class="case-tag">OWASP Top 10</span>
+        </div>
+      </div>
+
+      <p style="margin-top:18px; font-size:13.5px;">Write-ups and progress are published on <a class="case-link" href="#" id="gh-link">GitHub</a> and <a class="case-link" href="#" id="li-link">LinkedIn</a>.</p>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certs">
+      <div class="tag">training log</div>
+      <h2>Certifications &amp; training</h2>
+
+      <div class="cert">
+        <div class="cert-top">
+          <span class="cert-name">SOC Analyst Learning Path — LetsDefend</span>
+          <span class="cert-date">2026</span>
+        </div>
+        <p>Hands-on blue-team training on a virtual SIEM: alert triage, phishing analysis, web attack investigation, and malware triage on live VMs.</p>
+      </div>
+
+      <div class="cert">
+        <div class="cert-top">
+          <span class="cert-name">Practical Web Application Penetration Testing (EWPT / EWPTX content)</span>
+          <span class="cert-date">Dec 2025 · 160 hrs</span>
+        </div>
+        <p>Network, web, Linux, and Windows fundamentals, plus 30 hours of real bug-bounty practice — reinforcing attacker-mindset for SOC detection (OWASP Top 10, injection, SSRF, IDOR).</p>
+      </div>
+
+      <div class="cert">
+        <div class="cert-top">
+          <span class="cert-name">ECPC 2024 Qualification Participant</span>
+          <span class="cert-date">2024</span>
+        </div>
+      </div>
+
+      <div class="cert">
+        <div class="cert-top">
+          <span class="cert-name">English Communication Course — British Council</span>
+          <span class="cert-date">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="tag">education</div>
+      <h2>Degree</h2>
+      <div class="cert" style="border-top:none; padding-top:0;">
+        <div class="cert-top">
+          <span class="cert-name">B.Sc. Computer Science &amp; Artificial Intelligence — Cybersecurity Track</span>
+          <span class="cert-date">Expected 2027</span>
+        </div>
+        <p>Faculty of Computers and Artificial Intelligence, Cairo University</p>
+        <p style="margin-top:8px;">Relevant coursework: Fundamentals of Cybersecurity, Computer Security &amp; Privacy, Advanced Cryptography, Networks-1, Networks-2, Networks &amp; Web Programming, CCNA, CCNA-2, Operating Systems, Data Structures, Algorithms.</p>
+      </div>
+      <div class="cov-row" style="margin-top:10px;">
+        <div class="cov-label">Languages</div>
+        <div class="cov-values">Arabic (native) · English (professional working) · German (beginner)</div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="tag">contact</div>
+      <h2>Open a ticket</h2>
+      <div class="contact-panel">
+        <p class="lede">Available for Junior SOC Analyst (L1) roles, including 24x7 shift environments.</p>
+        <div class="contact-grid">
+          <div class="contact-item"><span class="k">EMAIL</span><a href="mailto:mazenmahmoud1552005@gmail.com">mazenmahmoud1552005@gmail.com</a></div>
+          <div class="contact-item"><span class="k">PHONE</span><a href="tel:+201100585916">+20 110 058 5916</a></div>
+          <div class="contact-item"><span class="k">LOCATION</span><span style="color:var(--text)">6th of October, Giza, Egypt</span></div>
+          <div class="contact-item"><span class="k">LINKEDIN</span><a href="#" id="li-link-2">add your profile URL</a></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>mazen@soc:~$ end of session — thanks for reading</footer>
+  </div>
+
+</body>
+</html>
